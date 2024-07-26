@@ -1,4 +1,9 @@
 package com.example.athena.core.repositories;
 
-public interface UserRepository {
+import com.example.athena.core.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+
+public interface UserRepository extends JpaRepository<User, String> {
+    UserDetails findByUsername(String username);
 }
