@@ -18,7 +18,11 @@
 		<license/>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+            <id>leander.mesquita</id>
+            <name>Leander Mesquita</name>
+            <email>leander.lopes.mesquita@gmail.com</email>
+        </developer>
 	</developers>
 	<scm>
 		<connection/>
