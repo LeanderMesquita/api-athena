@@ -5,10 +5,12 @@ import com.example.athena.core.http.dto.UserRequestDTO;
 import com.example.athena.core.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserService {
 
     @Autowired
@@ -25,8 +27,7 @@ public class UserService {
     public User updateUser(String id, UserRequestDTO userDetails){
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        user.setName(userDetails.name());
-        user.setLastName(userDetails.lastName());
+        user.setUsername(userDetails.name()+" "+userDetails.lastName());
 
         return userRepository.save(user);
     }
