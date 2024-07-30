@@ -26,20 +26,16 @@ public class User  implements UserDetails {
     private String email;
 
     @Setter
-    private String name;
-    @Setter
-    private String lastName;
-
+    private String username;
     private String password;
     private UserRole userRole;
     private Instant created_at;
     private Instant updated_at;
 
     public User (String name, String lastName, String password, UserRole role){
-        this.name = name;
-        this.lastName = lastName;
         this.password = password;
         this.userRole = role;
+        this.username = name+" "+lastName;
     }
 
     @Override
@@ -65,11 +61,6 @@ public class User  implements UserDetails {
                     new SimpleGrantedAuthority("ROLE_INTERN")
             );
         };
-    }
-
-    @Override
-    public String getUsername() {
-        return name+" "+lastName;
     }
 
 }
