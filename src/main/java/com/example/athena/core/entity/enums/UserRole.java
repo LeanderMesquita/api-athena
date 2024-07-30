@@ -1,5 +1,8 @@
 package com.example.athena.core.entity.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum UserRole {
     ADMIN("admin"),
     MANAGER("manager"),
@@ -11,8 +14,7 @@ public enum UserRole {
     UserRole(String role){
         this.role = role;
     }
-    public String getRole(){
-        return role;
-    }}
+
+}
 
 
