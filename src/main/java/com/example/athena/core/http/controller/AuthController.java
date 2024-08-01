@@ -31,7 +31,7 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthDTO data){
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((User) auth.getPrincipal());
@@ -39,7 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
+    public ResponseEntity<Void> register(@RequestBody @Valid RegisterDTO data){
         var username = data.name()+" "+data.lastName();
         if(this.userRepository.findByUsername(username) != null) return ResponseEntity.badRequest().build();
 
