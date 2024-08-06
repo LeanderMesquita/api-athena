@@ -41,10 +41,15 @@ public class UserController {
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable String id){
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping
+    public ResponseEntity<User> sendCredit(@PathVariable String id, @RequestBody @Valid UserRequestDTO request){
+        User user = userService.sendCredit(id, request);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

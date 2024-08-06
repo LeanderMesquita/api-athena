@@ -6,6 +6,8 @@ public record UserRequestDTO(
         @NotBlank
         String name,
         @NotBlank
-        String lastName
+        String lastName,
+        @NotBlank
+        Integer credit
 ) {
 }

@@ -12,8 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,7 +20,6 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
 
@@ -38,6 +35,9 @@ public class User implements UserDetails {
     private String password;
     private UserRole userRole;
 
+    @Setter
+    private Integer credit;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private Instant created_at;
@@ -51,6 +51,8 @@ public class User implements UserDetails {
         this.userRole = role;
         this.username = name+" "+lastName;
         this.email = email;
+        this.credit = 0;
+
     }
 
     @Override
