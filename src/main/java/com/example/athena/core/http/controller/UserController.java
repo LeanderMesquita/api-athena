@@ -47,7 +47,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping
+    @PostMapping("/send-credit/{id}")
     public ResponseEntity<User> sendCredit(@PathVariable String id, @RequestBody @Valid UserRequestDTO request){
         User user = userService.sendCredit(id, request);
         return new ResponseEntity<>(user, HttpStatus.OK);
