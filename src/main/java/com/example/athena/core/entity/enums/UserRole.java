@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum UserRole {
-    ADMIN("admin"),
-    MANAGER("manager"),
-    COLLABORATOR("collaborator"),
-    INTERN("intern");
+    ADMIN("Administrador"),
+    MANAGER("Gerente"),
+    COLLABORATOR("Colaborador"),
+    INTERN("Estagiário");
 
     private final String role;
 

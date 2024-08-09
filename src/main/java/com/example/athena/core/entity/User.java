@@ -16,12 +16,14 @@ import java.util.Collection;
 import java.util.List;
 
 @Table(name = "users")
-@Entity(name = "users")
+@Entity(name = "user")
 @EntityListeners(AuditingEntityListener.class)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class User implements UserDetails {
+public abstract class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,10 +35,10 @@ public class User implements UserDetails {
     @Setter
     private String username;
     private String password;
-    private UserRole userRole;
 
-    @Setter
-    private Integer credit;
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -48,31 +50,23 @@ public class User implements UserDetails {
 
     public User (String name, String lastName, String password, UserRole role, String email){
         this.password = password;
-        this.userRole = role;
+        this.role = role;
         this.username = name+" "+lastName;
         this.email = email;
-        this.credit = 0;
-
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        return switch (this.userRole) {
+        return switch (this.role) {
             case ADMIN -> List.of(
-                    new SimpleGrantedAuthority("ROLE_ADMIN"),
-                    new SimpleGrantedAuthority("ROLE_MANAGER"),
-                    new SimpleGrantedAuthority("ROLE_COLLABORATOR"),
-                    new SimpleGrantedAuthority("ROLE_INTERN")
+                    new SimpleGrantedAuthority("ROLE_ADMIN")
             );
             case MANAGER -> List.of(
-                    new SimpleGrantedAuthority("ROLE_MANAGER"),
-                    new SimpleGrantedAuthority("ROLE_COLLABORATOR"),
-                    new SimpleGrantedAuthority("ROLE_INTERN")
+                    new SimpleGrantedAuthority("ROLE_MANAGER")
             );
             case COLLABORATOR -> List.of(
-                    new SimpleGrantedAuthority("ROLE_COLLABORATOR"),
-                    new SimpleGrantedAuthority("ROLE_INTERN")
+                    new SimpleGrantedAuthority("ROLE_COLLABORATOR")
             );
             case INTERN -> List.of(
                     new SimpleGrantedAuthority("ROLE_INTERN")
