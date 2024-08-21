@@ -1,6 +1,7 @@
 package com.example.athena.core.entity;
 
 import com.example.athena.core.entity.enums.UserRole;
+import com.example.athena.core.entity.interfaces.CreditAssignable;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @DiscriminatorValue("INTERN")
 @Getter
 @Setter
-public class Intern extends User{
+public class Intern extends User implements CreditAssignable {
 
     private Integer credit;
 
@@ -26,4 +27,8 @@ public class Intern extends User{
         this.credit = 0;
     }
 
+    @Override
+    public void assignCredit(Integer credit) {
+        this.setCredit(credit);
+    }
 }
