@@ -1,6 +1,8 @@
 package com.example.athena.core.http.controller;
 
 import com.example.athena.core.entity.User;
+import com.example.athena.core.entity.enums.UserRole;
+import com.example.athena.core.entity.factory.UserFactory;
 import com.example.athena.core.http.dto.AuthDTO;
 import com.example.athena.core.http.dto.LoginResponseDTO;
 import com.example.athena.core.http.dto.RegisterDTO;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.EnumSet;
 
 @RestController
 @RequestMapping("auth")
@@ -41,14 +45,46 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody @Valid RegisterDTO data){
 
-        var email = data.email();
-        if(this.userRepository.findByEmail(email) != null) return ResponseEntity.badRequest().build();
+        if(this.userRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.name(), data.lastName(), encryptedPassword, data.role(), data.email());
 
+
+        User newUser;
+
+        if(EnumSet.of(UserRole.COLLABORATOR).contains(data.role())){
+            newUser = UserFactory.createCollaborator(data.name(),data.lastName(),data.email(),encryptedPassword);
+            this.userRepository.save(newUser);
+            return ResponseEntity.ok().build();
+        }
+
+        newUser = UserFactory.createIntern(data.name(),data.lastName(),data.email(),encryptedPassword);
         this.userRepository.save(newUser);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/register/operators")
+    public ResponseEntity<Void> registerAdmin(@RequestBody @Valid RegisterDTO data){
+
+        if(!EnumSet.of(UserRole.MANAGER, UserRole.ADMIN).contains(data.role())){
+            return ResponseEntity.badRequest().build();
+        }
+
+        if(this.userRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+
+        if (EnumSet.of(UserRole.ADMIN).contains(data.role())){
+            User admin = UserFactory.createAdmin(data.name(), data.lastName(), data.email(), encryptedPassword);
+            userRepository.save(admin);
+            return ResponseEntity.ok().build();
+        }
+
+        User manager = UserFactory.createManager(data.name(), data.lastName(), data.email(), encryptedPassword);
+        userRepository.save(manager);
+        return ResponseEntity.ok().build();
+    }
+
+
+
 
 }
