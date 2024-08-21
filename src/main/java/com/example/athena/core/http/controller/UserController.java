@@ -2,6 +2,7 @@ package com.example.athena.core.http.controller;
 
 import com.example.athena.core.entity.User;
 import com.example.athena.core.http.dto.UserRequestDTO;
+import com.example.athena.core.http.service.CreditService;
 import com.example.athena.core.http.service.UserService;
 import com.example.athena.core.repositories.UserRepository;
 import jakarta.validation.Valid;
@@ -18,10 +19,10 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Autowired
-    UserService userService;
+    CreditService creditService;
 
     @GetMapping("/view")
     public ResponseEntity<List<User>> getAllUsers(){
@@ -47,9 +48,10 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/send-credit/{id}")
+    @PutMapping("/send-credit/{id}")
     public ResponseEntity<User> sendCredit(@PathVariable String id, @RequestBody @Valid UserRequestDTO request){
-        User user = userService.sendCredit(id, request);
+        User user = creditService.sendCredit(id, request.credit());
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
 }

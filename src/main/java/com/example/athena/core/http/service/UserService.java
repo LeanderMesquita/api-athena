@@ -38,11 +38,4 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public User sendCredit(String id, UserRequestDTO userDetails){
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        user.setCredit(userDetails.credit());
-
-        return userRepository.save(user);
-    }
 }
