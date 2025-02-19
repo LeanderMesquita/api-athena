@@ -1,5 +1,6 @@
 package com.llm.athena.core.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.llm.athena.core.entity.enums.JobRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -25,6 +26,14 @@ public class User extends BaseUser {
     private String jobPosition;
     private String company;
     private LocalDate birthdate;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscribe> subscribes;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<News> news;
 
     public User
     (

@@ -4,11 +4,11 @@ import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.io.Serializable;
 import java.time.Instant;
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class BaseUser {
+@MappedSuperclass
+public abstract class BaseUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
