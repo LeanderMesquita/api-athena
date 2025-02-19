@@ -1,0 +1,21 @@
+services:
+  db_athena:
+    image: 'postgres:16-alpine'
+    environment:
+      - POSTGRES_DB=athena
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5438:5432"
+
+  athena:
+    build:
+      context: .
+    ports:
+      - "8085:8080"
+    depends_on:
+      - db_athena
+    environment:
+      - SPRING_DATASOURCE_URL=${DB_URL}
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
