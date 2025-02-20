@@ -1,4 +1,8 @@
 package com.llm.athena.core.repository;
 
-public interface NewsRepository {
+import com.llm.athena.core.entity.News;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+public interface NewsRepository extends JpaRepository<News, String>, JpaSpecificationExecutor<News> {
 }
