@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,9 @@ public class UserService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public Page<User> getAll(Pageable pageable){
         return repository.findAll(pageable);
@@ -24,8 +28,12 @@ public class UserService {
         return repository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
+    public User getByEmail(String email){
+        return repository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+    }
+
     public void create(UserCreateRequestDto dto){
-        User user = new User(dto);
+        User user = new User(dto, passwordEncoder);
         repository.save(user);
     }
 

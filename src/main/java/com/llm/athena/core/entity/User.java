@@ -2,10 +2,13 @@ package com.llm.athena.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.llm.athena.core.entity.enums.JobRole;
+import com.llm.athena.core.http.request.LoginRequestDto;
 import com.llm.athena.core.http.request.UserCreateRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,9 +41,12 @@ public class User extends BaseUser {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<News> news;
 
+    public boolean isLoginCorrect(LoginRequestDto loginRequest, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(loginRequest.password(), getPassword());
+    }
 
-    public User (UserCreateRequestDto dto){
-        super(dto.password());
+    public User (UserCreateRequestDto dto, PasswordEncoder passwordEncoder){
+        super(passwordEncoder.encode(dto.password()));
         this.username = dto.name() + " " + dto.lastName();
         this.email = dto.email();
         this.cpfCnpj = dto.cpfCnpj();
