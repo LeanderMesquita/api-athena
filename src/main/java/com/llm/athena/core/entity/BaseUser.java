@@ -22,6 +22,8 @@ public abstract class BaseUser implements Serializable {
     @LastModifiedDate
     private Instant updatedAt;
 
+    public BaseUser(){}
+
     public BaseUser(String password){
         this.password = password;
     }

@@ -2,23 +2,26 @@ package com.llm.athena.core.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.llm.athena.core.entity.enums.JobRole;
+import com.llm.athena.core.http.request.UserCreateRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
+@EntityListeners(AuditingEntityListener.class)
 public class User extends BaseUser {
 
     private String username;
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private JobRole role;
+    private JobRole role = JobRole.EMPLOYEE;
 
-    private Long points;
+    private Long points = 0L;
 
     @Size(min = 14, max = 18)
     private String cpfCnpj;
@@ -35,29 +38,18 @@ public class User extends BaseUser {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<News> news;
 
-    public User
-    (
-            String password,
-            String name,
-            String lastName,
-            String email,
-            JobRole role,
-            Long points,
-            String cpfCnpj,
-            String jobPosition,
-            String company,
-            LocalDate birthdate
-    ) {
-        super(password);
-        this.username = name + " " + lastName;
-        this.email = email;
-        this.role = role;
-        this.points = points;
-        this.cpfCnpj = cpfCnpj;
-        this.jobPosition = jobPosition;
-        this.company = company;
-        this.birthdate = birthdate;
+
+    public User (UserCreateRequestDto dto){
+        super(dto.password());
+        this.username = dto.name() + " " + dto.lastName();
+        this.email = dto.email();
+        this.cpfCnpj = dto.cpfCnpj();
+        this.jobPosition = dto.jobPosition();
+        this.company = dto.company();
+        this.birthdate = dto.birthdate();
     }
+
+    public User (){}
 
     public String getUsername() {
         return username;
