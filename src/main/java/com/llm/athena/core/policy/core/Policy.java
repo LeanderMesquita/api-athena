@@ -1,21 +1,21 @@
 package com.llm.athena.core.policy.core;
 
-import com.llm.athena.core.entity.BaseUser;
+import com.llm.athena.core.entity.User;
 
 public interface Policy<T> {
-    boolean before(BaseUser user);
+    boolean before(User user);
 
-    boolean getAll(BaseUser user);
+    boolean getAll(User user);
 
-    boolean getById(BaseUser user, T entity);
+    boolean getById(User user, T entity);
 
-    boolean create(BaseUser user);
+    boolean create(User user);
 
-    boolean update(BaseUser user, T entity);
+    boolean update(User user, T entity);
 
-    boolean delete(BaseUser user, T entity);
+    boolean delete(User user, T entity);
 
-    boolean forceDelete(BaseUser user);
+    boolean forceDelete(User user);
 
-    boolean restore(BaseUser user);
+    boolean restore(User user);
 }

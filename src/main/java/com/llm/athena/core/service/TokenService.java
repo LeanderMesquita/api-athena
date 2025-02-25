@@ -21,7 +21,7 @@ public class TokenService {
         String scope = user.getRole().toString();
         var claims = JwtClaimsSet.builder()
                 .issuer("athena")
-                .subject(user.getId())
+                .subject(user.getEmail())
                 .issuedAt(Instant.now())
                 .expiresAt(generateExpirationDate(expiresIn))
                 .claim("scope", scope)
