@@ -28,20 +28,22 @@ public class AuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = recoverToken(request);
+        if (token != null) {
+            Jwt jwt = jwtDecoder.decode(token);
 
-        Jwt jwt = jwtDecoder.decode(token);
-        Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
+            Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
 
-        UsernamePasswordAuthenticationToken authentication =
-                new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, authorities);
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, authorities);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
         filterChain.doFilter(request, response);
     }
 
     private String recoverToken(HttpServletRequest request){
         var authHeader = request.getHeader("Authorization");
+
         if (authHeader == null) return null;
         return authHeader.replace("Bearer ", "");
     }
