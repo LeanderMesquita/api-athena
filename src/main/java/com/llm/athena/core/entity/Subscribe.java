@@ -7,6 +7,8 @@ public class Subscribe extends Publish{
 
     private User subscribed;
 
+    public Subscribe(){}
+
     public Subscribe(User author, String description, User subscribed) {
         super(author, description);
         this.subscribed = subscribed;

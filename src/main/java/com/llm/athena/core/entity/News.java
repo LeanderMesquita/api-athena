@@ -15,6 +15,8 @@ public class News extends Publish{
         this.title = title;
     }
 
+    public News(){}
+
     public String getTitle() {
         return title;
     }
