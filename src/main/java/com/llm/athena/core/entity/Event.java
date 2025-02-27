@@ -20,6 +20,8 @@ public class Event extends Publish{
         this.endDate = endDate;
     }
 
+    public Event(){}
+
     public String getTitle() {
         return title;
     }
