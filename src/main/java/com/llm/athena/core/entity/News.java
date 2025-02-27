@@ -1,5 +1,6 @@
 package com.llm.athena.core.entity;
 
+import com.llm.athena.core.http.request.NewsCreateRequestDto;
 import jakarta.persistence.Entity;
 
 @Entity
@@ -8,10 +9,10 @@ public class News extends Publish{
     private String title;
     private String lead;
 
-    public News(User author, String description, String title, String lead) {
+    public News(User author, String description, String lead, String title) {
         super(author, description);
-        this.title = title;
         this.lead = lead;
+        this.title = title;
     }
 
     public String getTitle() {

@@ -32,6 +32,8 @@ public abstract class Publish implements Serializable {
         this.description = description;
     }
 
+    public Publish(){}
+
     public void setAuthor(User author) {
         this.author = author;
     }
